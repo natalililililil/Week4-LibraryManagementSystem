@@ -3,7 +3,7 @@ using Week3_LibraryManagementSystem.Models;
 
 namespace Week3_LibraryManagementSystem.Validation
 {
-    public class AuthorValidator : AbstractValidator<Author>
+    public class AuthorValidator : AbstractValidator<AuthorDto>
     {
         public AuthorValidator()
         {

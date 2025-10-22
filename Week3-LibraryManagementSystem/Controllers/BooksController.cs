@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Week3_LibraryManagementSystem.Models;
 using Week3_LibraryManagementSystem.Repository;
-using System;
-using System.Threading.Tasks;
 
 namespace Week3_LibraryManagementSystem.Controllers
 {
@@ -35,17 +33,28 @@ namespace Week3_LibraryManagementSystem.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] Book book)
+        public async Task<IActionResult> Create([FromBody] BookDto dto)
         {
+            var book = new Book
+            {
+                Title = dto.Title,
+                PublishedYear = dto.PublishedYear,
+                AuthorId = dto.AuthorId
+            };
+
             var created = await _bookRepository.CreateAsync(book);
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, [FromBody] Book book)
+        public async Task<IActionResult> Update(Guid id, [FromBody] BookDto dto)
         {
-            if (id != book.Id) 
-                return BadRequest("Id в URL и теле запроса должны совпадать");
+            var book = await _bookRepository.GetByIdAsync(id);
+            if (book == null) return NotFound();
+
+            book.Title = dto.Title;
+            book.PublishedYear = dto.PublishedYear;
+            book.AuthorId = dto.AuthorId;
 
             var updated = await _bookRepository.UpdateAsync(book);
 

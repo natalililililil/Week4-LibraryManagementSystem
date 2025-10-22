@@ -4,7 +4,7 @@ using Week3_LibraryManagementSystem.Repository;
 
 namespace Week3_LibraryManagementSystem.Validation
 {
-    public class BookValidator : AbstractValidator<Book>
+    public class BookValidator : AbstractValidator<BookDto>
     {
         public BookValidator(IAuthorRepository authorRepository)
         {
