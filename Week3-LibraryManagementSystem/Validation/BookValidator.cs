@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
-using Week3_LibraryManagementSystem.Models;
-using Week3_LibraryManagementSystem.Repository;
+using Week3_LibraryManagementSystem.Models.DTOs;
+using Week3_LibraryManagementSystem.Repository.Interfaces;
 
 namespace Week3_LibraryManagementSystem.Validation
 {

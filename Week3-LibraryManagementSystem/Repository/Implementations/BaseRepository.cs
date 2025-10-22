@@ -1,9 +1,10 @@
-﻿using Week3_LibraryManagementSystem.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Week3_LibraryManagementSystem.Models.Entities;
+using Week3_LibraryManagementSystem.Repository.Interfaces;
 
-namespace Week3_LibraryManagementSystem.Repository
+namespace Week3_LibraryManagementSystem.Repository.Implementations
 {
     public abstract class BaseRepository<T> : IRepository<T> where T : class, IEntity
     {

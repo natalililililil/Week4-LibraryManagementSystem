@@ -1,9 +1,10 @@
-﻿using Week3_LibraryManagementSystem.Models;
-using Week3_LibraryManagementSystem.Data;
+﻿using Week3_LibraryManagementSystem.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using Week3_LibraryManagementSystem.Models.Entities;
+using Week3_LibraryManagementSystem.Repository.Interfaces;
 
-namespace Week3_LibraryManagementSystem.Repository
+namespace Week3_LibraryManagementSystem.Repository.Implementations
 {
     public class BookRepository : BaseRepository<Book>, IBookRepository
     {

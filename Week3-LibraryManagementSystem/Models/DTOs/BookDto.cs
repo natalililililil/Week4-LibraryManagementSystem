@@ -1,4 +1,4 @@
-﻿namespace Week3_LibraryManagementSystem.Models
+﻿namespace Week3_LibraryManagementSystem.Models.DTOs
 {
     public class BookDto
     {

@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Week3_LibraryManagementSystem.Models;
+using Week3_LibraryManagementSystem.Models.DTOs;
 
 namespace Week3_LibraryManagementSystem.Validation
 {

@@ -1,9 +1,9 @@
-﻿using Week3_LibraryManagementSystem.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Week3_LibraryManagementSystem.Models.Entities;
 
-namespace Week3_LibraryManagementSystem.Repository
+namespace Week3_LibraryManagementSystem.Repository.Interfaces
 {
     public interface IRepository<T> where T : class, IEntity
     {

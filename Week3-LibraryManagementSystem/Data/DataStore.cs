@@ -1,4 +1,4 @@
-﻿using Week3_LibraryManagementSystem.Models;
+﻿using Week3_LibraryManagementSystem.Models.Entities;
 
 namespace Week3_LibraryManagementSystem.Data
 {
