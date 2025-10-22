@@ -18,7 +18,7 @@ namespace Week3_LibraryManagementSystem.Validation
 
             RuleFor(b => b.AuthorId)
                 .NotEmpty().WithMessage("AuthorId не может быть пустым")
-                .Must(authorId => authorRepository.GetById(authorId) != null)
+                .Must(authorId => authorRepository.GetByIdAsync(authorId) != null)
                 .WithMessage("Автор с таким Id не найден");
         }
     }

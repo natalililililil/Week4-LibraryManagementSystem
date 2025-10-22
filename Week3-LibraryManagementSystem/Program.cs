@@ -1,5 +1,6 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.OpenApi.Models;
 using Week3_LibraryManagementSystem.Repository;
 using Week3_LibraryManagementSystem.Validation;
@@ -24,6 +25,30 @@ builder.Services.AddSingleton<IAuthorRepository, AuthorRepository>();
 builder.Services.AddSingleton<IBookRepository, BookRepository>();
 
 var app = builder.Build();
+
+app.UseExceptionHandler(errorApp =>
+{
+    errorApp.Run(async context =>
+    {
+        var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
+        var exception = exceptionHandlerPathFeature?.Error;
+
+        app.Logger.LogError(exception, "Произошла необработанная ошибка");
+
+        context.Response.StatusCode = 500;
+        context.Response.ContentType = "application/json";
+
+        var problemDetails = new
+        {
+            status = 500,
+            title = "Внутренняя ошибка сервера",
+            detail = exception?.Message,
+            path = context.Request.Path
+        };
+
+        await context.Response.WriteAsJsonAsync(problemDetails);
+    });
+});
 
 if (app.Environment.IsDevelopment())
 {

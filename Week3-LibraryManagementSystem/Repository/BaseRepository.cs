@@ -1,6 +1,7 @@
 ﻿using Week3_LibraryManagementSystem.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Week3_LibraryManagementSystem.Repository
 {
@@ -8,33 +9,33 @@ namespace Week3_LibraryManagementSystem.Repository
     {
         protected abstract List<T> DbSet { get; }
 
-        public T Create(T entity)
+        public Task<T> CreateAsync(T entity)
         {
             entity.Id = Guid.NewGuid();
             DbSet.Add(entity);
-            return entity;
+            return Task.FromResult(entity);
         }
 
-        public bool Delete(Guid id)
+        public Task<bool> DeleteAsync(Guid id)
         {
-            var entity = GetById(id);
-            if (entity == null)
-                return false;
+            var entity = DbSet.FirstOrDefault(x => x.Id == id);
+            if (entity == null) 
+                return Task.FromResult(false);
 
             DbSet.Remove(entity);
-            return true;
+            return Task.FromResult(true);
         }
 
-        public IEnumerable<T> GetAll()
+        public Task<IEnumerable<T>> GetAllAsync()
         {
-            return DbSet;
+            return Task.FromResult(DbSet.AsEnumerable());
         }
 
-        public T? GetById(Guid id)
+        public Task<T?> GetByIdAsync(Guid id)
         {
-            return DbSet.FirstOrDefault(x => x.Id == id);
+            return Task.FromResult(DbSet.FirstOrDefault(x => x.Id == id));
         }
 
-        public abstract bool Update(T entity);
+        public abstract Task<bool> UpdateAsync(T entity);
     }
 }

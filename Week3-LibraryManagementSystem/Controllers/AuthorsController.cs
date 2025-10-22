@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Week3_LibraryManagementSystem.Models;
 using Week3_LibraryManagementSystem.Repository;
+using System;
+using System.Threading.Tasks;
 
 namespace Week3_LibraryManagementSystem.Controllers
 {
@@ -16,46 +18,49 @@ namespace Week3_LibraryManagementSystem.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            return Ok(_authorRepository.GetAll());
+            var authors = await _authorRepository.GetAllAsync();
+            return Ok(authors);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(Guid id)
+        public async Task<IActionResult> GetById(Guid id)
         {
-            var author = _authorRepository.GetById(id);
+            var author = await _authorRepository.GetByIdAsync(id);
+
             if (author == null) 
                 return NotFound();
             return Ok(author);
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] Author author) 
+        public async Task<IActionResult> Create([FromBody] Author author)
         {
-            var result = _authorRepository.Create(author);
-            return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
+            var created = await _authorRepository.CreateAsync(author);
+            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(Guid id, [FromBody] Author author)
+        public async Task<IActionResult> Update(Guid id, [FromBody] Author author)
         {
-            if (id != author.Id)
+            if (id != author.Id) 
                 return BadRequest("Id в URL и теле запроса должны совпадать");
 
-            var updated = _authorRepository.Update(author);
-            if (!updated) return NotFound();
+            var updated = await _authorRepository.UpdateAsync(author);
+
+            if (!updated)
+                return NotFound();
             return NoContent();
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid id)
         {
-            var author = _authorRepository.Delete(id);
+            var deleted = await _authorRepository.DeleteAsync(id);
 
-            if (!author)
+            if (!deleted) 
                 return NotFound();
-
             return NoContent();
         }
     }

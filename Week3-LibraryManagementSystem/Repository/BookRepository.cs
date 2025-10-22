@@ -1,5 +1,7 @@
-﻿using Week3_LibraryManagementSystem.Data;
-using Week3_LibraryManagementSystem.Models;
+﻿using Week3_LibraryManagementSystem.Models;
+using Week3_LibraryManagementSystem.Data;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Week3_LibraryManagementSystem.Repository
 {
@@ -7,17 +9,16 @@ namespace Week3_LibraryManagementSystem.Repository
     {
         protected override List<Book> DbSet => DataStore.Books;
 
-        public override bool Update(Book newBookData)
+        public override Task<bool> UpdateAsync(Book newBookData)
         {
-            var oldBookData = GetById(newBookData.Id);
-
-            if (oldBookData == null)
-                return false;
+            var oldBookData = DbSet.FirstOrDefault(b => b.Id == newBookData.Id);
+            if (oldBookData == null) 
+                return Task.FromResult(false);
 
             oldBookData.Title = newBookData.Title;
             oldBookData.PublishedYear = newBookData.PublishedYear;
             oldBookData.AuthorId = newBookData.AuthorId;
-            return true;
+            return Task.FromResult(true);
         }
     }
 }
