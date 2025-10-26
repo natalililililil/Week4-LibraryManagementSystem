@@ -7,50 +7,21 @@ using Week3_LibraryManagementSystem.Validation;
 
 namespace Week3_LibraryManagementSystem.Services.Implementations
 {
-    public class AuthorService : IAuthorService
+    public class AuthorService : BaseService<Author, AuthorDto>, IAuthorService
     {
-        private readonly IAuthorRepository _authorRepository;
-        private readonly IValidator<AuthorDto> _authorValidator;
-        public AuthorService(IAuthorRepository authorRepository, IValidator<AuthorDto> authorValidator)
+        public AuthorService(IAuthorRepository repository, IValidator<AuthorDto> validator)
+            : base(repository, validator) { }
+
+        protected override Author MapToEntity(AuthorDto dto) => new Author
         {
-            _authorRepository = authorRepository;
-            _authorValidator = authorValidator;
-        }
+            Name = dto.Name,
+            DateOfBirth = dto.DateOfBirth
+        };
 
-        public async Task<Author> CreateAsync(AuthorDto dto)
+        protected override void UpdateEntity(Author entity, AuthorDto dto)
         {
-            var validation = await _authorValidator.ValidateAsync(dto);
-            if (!validation.IsValid)
-                throw new ValidationException(validation.Errors);
-
-            var author = new Author
-            {
-                Name = dto.Name,
-                DateOfBirth = dto.DateOfBirth
-            };
-
-            return await _authorRepository.CreateAsync(author);
-        }
-
-        public async Task<bool> DeleteAsync(Guid id) => await _authorRepository.DeleteAsync(id);
-
-        public async Task<IEnumerable<Author>> GetAllAsync() => await _authorRepository.GetAllAsync();
-
-        public async Task<Author?> GetByIdAsync(Guid id) => await _authorRepository.GetByIdAsync(id);
-
-        public async Task<bool> UpdateAsync(Guid id, AuthorDto dto)
-        {
-            var validation = await _authorValidator.ValidateAsync(dto);
-            if (!validation.IsValid)
-                throw new ValidationException(validation.Errors);
-
-            var author = await _authorRepository.GetByIdAsync(id);
-            if (author == null)
-                return false;
-
-            author.Name = dto.Name;
-            author.DateOfBirth = dto.DateOfBirth;
-            return await _authorRepository.UpdateAsync(author);
+            entity.Name = dto.Name;
+            entity.DateOfBirth = dto.DateOfBirth;
         }
     }
 }
