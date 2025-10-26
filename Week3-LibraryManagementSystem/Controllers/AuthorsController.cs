@@ -2,6 +2,7 @@
 using Week3_LibraryManagementSystem.Models.DTOs;
 using Week3_LibraryManagementSystem.Models.Entities;
 using Week3_LibraryManagementSystem.Repository.Interfaces;
+using Week3_LibraryManagementSystem.Services.Interfaces;
 
 namespace Week3_LibraryManagementSystem.Controllers
 {
@@ -9,24 +10,24 @@ namespace Week3_LibraryManagementSystem.Controllers
     [Route("api/[controller]")]
     public class AuthorsController : ControllerBase
     {
-        private readonly IAuthorRepository _authorRepository;
+        private readonly IAuthorService _authorService;
 
-        public AuthorsController(IAuthorRepository authorRepository)
+        public AuthorsController(IAuthorService authorService)
         {
-            _authorRepository = authorRepository;
+            _authorService = authorService;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var authors = await _authorRepository.GetAllAsync();
+            var authors = await _authorService.GetAllAsync();
             return Ok(authors);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var author = await _authorRepository.GetByIdAsync(id);
+            var author = await _authorService.GetByIdAsync(id);
 
             if (author == null) 
                 return NotFound();
@@ -36,26 +37,14 @@ namespace Week3_LibraryManagementSystem.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] AuthorDto dto)
         {
-            var author = new Author
-            {
-                Name = dto.Name,
-                DateOfBirth = dto.DateOfBirth
-            };
-
-            var created = await _authorRepository.CreateAsync(author);
+            var created = await _authorService.CreateAsync(dto);
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] AuthorDto dto)
         {
-            var author = await _authorRepository.GetByIdAsync(id);
-            if (author == null) return NotFound();
-
-            author.Name = dto.Name;
-            author.DateOfBirth = dto.DateOfBirth;
-
-            var updated = await _authorRepository.UpdateAsync(author);
+            var updated = await _authorService.UpdateAsync(id, dto);
 
             if (!updated)
                 return NotFound();
@@ -65,7 +54,7 @@ namespace Week3_LibraryManagementSystem.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var deleted = await _authorRepository.DeleteAsync(id);
+            var deleted = await _authorService.DeleteAsync(id);
 
             if (!deleted) 
                 return NotFound();

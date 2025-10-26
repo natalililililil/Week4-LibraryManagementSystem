@@ -2,6 +2,7 @@
 using Week3_LibraryManagementSystem.Models.DTOs;
 using Week3_LibraryManagementSystem.Models.Entities;
 using Week3_LibraryManagementSystem.Repository.Interfaces;
+using Week3_LibraryManagementSystem.Services.Interfaces;
 
 namespace Week3_LibraryManagementSystem.Controllers
 {
@@ -9,24 +10,24 @@ namespace Week3_LibraryManagementSystem.Controllers
     [Route("api/[controller]")]
     public class BooksController : ControllerBase
     {
-        private readonly IBookRepository _bookRepository;
+        private readonly IBookService _bookService;
 
-        public BooksController(IBookRepository bookRepo)
+        public BooksController(IBookService bookService)
         {
-            _bookRepository = bookRepo;
+            _bookService = bookService;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var books = await _bookRepository.GetAllAsync();
+            var books = await _bookService.GetAllAsync();
             return Ok(books);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var book = await _bookRepository.GetByIdAsync(id);
+            var book = await _bookService.GetByIdAsync(id);
 
             if (book == null) 
                 return NotFound();
@@ -36,28 +37,14 @@ namespace Week3_LibraryManagementSystem.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] BookDto dto)
         {
-            var book = new Book
-            {
-                Title = dto.Title,
-                PublishedYear = dto.PublishedYear,
-                AuthorId = dto.AuthorId
-            };
-
-            var created = await _bookRepository.CreateAsync(book);
+            var created = await _bookService.CreateAsync(dto);
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] BookDto dto)
         {
-            var book = await _bookRepository.GetByIdAsync(id);
-            if (book == null) return NotFound();
-
-            book.Title = dto.Title;
-            book.PublishedYear = dto.PublishedYear;
-            book.AuthorId = dto.AuthorId;
-
-            var updated = await _bookRepository.UpdateAsync(book);
+            var updated = await _bookService.UpdateAsync(id, dto);
 
             if (!updated) 
                 return NotFound();
@@ -67,7 +54,7 @@ namespace Week3_LibraryManagementSystem.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var deleted = await _bookRepository.DeleteAsync(id);
+            var deleted = await _bookService.DeleteAsync(id);
 
             if (!deleted) 
                 return NotFound();

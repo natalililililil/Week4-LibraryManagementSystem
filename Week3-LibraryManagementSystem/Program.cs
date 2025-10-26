@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.OpenApi.Models;
 using Week3_LibraryManagementSystem.Repository.Implementations;
 using Week3_LibraryManagementSystem.Repository.Interfaces;
+using Week3_LibraryManagementSystem.Services.Implementations;
+using Week3_LibraryManagementSystem.Services.Interfaces;
 using Week3_LibraryManagementSystem.Validation;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +23,9 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining<AuthorValidator>();
+
+builder.Services.AddScoped<IBookService, BookService>();
+builder.Services.AddScoped<IAuthorService, AuthorService>();
 
 builder.Services.AddSingleton<IAuthorRepository, AuthorRepository>();
 builder.Services.AddSingleton<IBookRepository, BookRepository>();
