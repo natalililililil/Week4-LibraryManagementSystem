@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Week3_LibraryManagementSystem.Repository.Implementations
 {
-    public class BookRepository : BaseRepository<Book>, IBookRepository
+    public class BookRepository : BaseRepository<Book, int>, IBookRepository
     {
         public BookRepository(LibraryContext context) : base(context) { }
 

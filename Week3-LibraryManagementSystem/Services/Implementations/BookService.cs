@@ -7,7 +7,7 @@ using Week3_LibraryManagementSystem.Services.Interfaces;
 
 namespace Week3_LibraryManagementSystem.Services.Implementations
 {
-    public class BookService : BaseService<Book, BookDto>, IBookService
+    public class BookService : BaseService<Book, BookDto, int>, IBookService
     {
         private readonly IBookRepository _bookRepository;
 

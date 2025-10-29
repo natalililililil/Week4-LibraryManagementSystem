@@ -2,7 +2,7 @@
 
 namespace Week3_LibraryManagementSystem.Repository.Interfaces
 {
-    public interface IBookRepository : IRepository<Book>
+    public interface IBookRepository : IRepository<Book, int>
     {
         Task<IEnumerable<Book>> GetBooksAfterYearAsync(int year);
     }

@@ -5,14 +5,14 @@ using Week3_LibraryManagementSystem.Services.Interfaces;
 
 namespace Week3_LibraryManagementSystem.Services.Implementations
 {
-    public abstract class BaseService<TEntity, TDto> : IBaseService<TEntity, TDto>
-        where TEntity : class, IEntity
+    public abstract class BaseService<TEntity, TDto, TKey> : IBaseService<TEntity, TDto, TKey>
+        where TEntity : class, IEntity<TKey>
         where TDto : class
     {
-        protected readonly IRepository<TEntity> _repository;
+        protected readonly IRepository<TEntity, TKey> _repository;
         private readonly IValidator<TDto> _validator;
 
-        protected BaseService(IRepository<TEntity> repository, IValidator<TDto> validator)
+        protected BaseService(IRepository<TEntity, TKey> repository, IValidator<TDto> validator)
         {
             _repository = repository;
             _validator = validator;
@@ -25,7 +25,7 @@ namespace Week3_LibraryManagementSystem.Services.Implementations
             return await _repository.CreateAsync(entity);
         }
 
-        public async Task<bool> UpdateAsync(int id, TDto dto)
+        public async Task<bool> UpdateAsync(TKey id, TDto dto)
         {
             await ValidateAsync(dto);
             var entity = await _repository.GetByIdAsync(id);
@@ -36,11 +36,11 @@ namespace Week3_LibraryManagementSystem.Services.Implementations
             return await _repository.UpdateAsync(entity);
         }
 
-        public async Task<bool> DeleteAsync(int id) => await _repository.DeleteAsync(id);
+        public async Task<bool> DeleteAsync(TKey id) => await _repository.DeleteAsync(id);
 
         public async Task<IEnumerable<TEntity>> GetAllAsync() => await _repository.GetAllAsync();
 
-        public async Task<TEntity?> GetByIdAsync(int id) => await _repository.GetByIdAsync(id);
+        public async Task<TEntity?> GetByIdAsync(TKey id) => await _repository.GetByIdAsync(id);
 
         private async Task ValidateAsync(TDto dto)
         {

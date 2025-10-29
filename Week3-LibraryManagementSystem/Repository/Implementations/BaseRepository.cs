@@ -8,7 +8,7 @@ using Week3_LibraryManagementSystem.Repository.Interfaces;
 
 namespace Week3_LibraryManagementSystem.Repository.Implementations
 {
-    public abstract class BaseRepository<T> : IRepository<T> where T : class, IEntity
+    public abstract class BaseRepository<T, TKey> : IRepository<T, TKey> where T : class, IEntity<TKey>
     {
         protected readonly LibraryContext _context;
         protected readonly DbSet<T> DbSet;
@@ -26,9 +26,9 @@ namespace Week3_LibraryManagementSystem.Repository.Implementations
             return entity;
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(TKey id)
         {
-            var entity = await DbSet.FirstOrDefaultAsync(x => x.Id == id);
+            var entity = await DbSet.FirstOrDefaultAsync(x => x.Id!.Equals(id));
             if (entity == null)
                 return false;
 
@@ -42,9 +42,9 @@ namespace Week3_LibraryManagementSystem.Repository.Implementations
             return await DbSet.AsNoTracking().ToListAsync();
         }
 
-        public async virtual Task<T?> GetByIdAsync(int id)
+        public async virtual Task<T?> GetByIdAsync(TKey id)
         {
-            return await DbSet.FirstOrDefaultAsync(x => x.Id == id);
+            return await DbSet.FirstOrDefaultAsync(x => x.Id!.Equals(id));
         }
 
         public abstract Task<bool> UpdateAsync(T entity);

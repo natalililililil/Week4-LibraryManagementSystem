@@ -8,7 +8,7 @@ using Week3_LibraryManagementSystem.Validation;
 
 namespace Week3_LibraryManagementSystem.Services.Implementations
 {
-    public class AuthorService : BaseService<Author, AuthorDto>, IAuthorService
+    public class AuthorService : BaseService<Author, AuthorDto, int>, IAuthorService
     {
         private readonly IAuthorRepository _authorRepository;
         public AuthorService(IAuthorRepository repository, IValidator<AuthorDto> validator) : base(repository, validator) 

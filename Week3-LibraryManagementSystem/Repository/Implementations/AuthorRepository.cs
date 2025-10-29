@@ -8,7 +8,7 @@ using Week3_LibraryManagementSystem.Models.DTOs;
 
 namespace Week3_LibraryManagementSystem.Repository.Implementations
 {
-    public class AuthorRepository : BaseRepository<Author>, IAuthorRepository
+    public class AuthorRepository : BaseRepository<Author, int>, IAuthorRepository
     {
         public AuthorRepository(LibraryContext context) : base(context) { }
 

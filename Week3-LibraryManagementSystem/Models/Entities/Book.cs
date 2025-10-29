@@ -2,7 +2,7 @@
 
 namespace Week3_LibraryManagementSystem.Models.Entities
 {
-    public class Book : IEntity
+    public class Book : IEntity<int>
     {
         public int Id { get; set; }
         public required string Title { get; set; }

@@ -3,7 +3,7 @@ using Week3_LibraryManagementSystem.Models.Entities;
 
 namespace Week3_LibraryManagementSystem.Services.Interfaces
 {
-    public interface IAuthorService : IBaseService<Author, AuthorDto>
+    public interface IAuthorService : IBaseService<Author, AuthorDto, int>
     {
         Task<IEnumerable<AuthorWithBookCountDto>> GetAuthorsWithBookCountAsync();
         Task<IEnumerable<Author>> FindAuthorsByNameAsync(string namePart);

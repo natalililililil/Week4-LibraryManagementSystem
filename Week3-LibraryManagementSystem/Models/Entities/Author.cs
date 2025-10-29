@@ -1,6 +1,6 @@
 ﻿namespace Week3_LibraryManagementSystem.Models.Entities
 {
-    public class Author : IEntity
+    public class Author : IEntity<int>
     {
         public int Id { get; set; }
         public required string Name { get; set; }
