@@ -25,7 +25,7 @@ namespace Week3_LibraryManagementSystem.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(Guid id)
+        public async Task<IActionResult> GetById(int id)
         {
             var book = await _bookService.GetByIdAsync(id);
 
@@ -42,7 +42,7 @@ namespace Week3_LibraryManagementSystem.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, [FromBody] BookDto dto)
+        public async Task<IActionResult> Update(int id, [FromBody] BookDto dto)
         {
             var updated = await _bookService.UpdateAsync(id, dto);
 
@@ -52,7 +52,7 @@ namespace Week3_LibraryManagementSystem.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> Delete(int id)
         {
             var deleted = await _bookService.DeleteAsync(id);
 

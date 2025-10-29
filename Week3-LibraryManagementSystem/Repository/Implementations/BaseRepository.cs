@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Week3_LibraryManagementSystem.Data;
 using Week3_LibraryManagementSystem.Models.Entities;
 using Week3_LibraryManagementSystem.Repository.Interfaces;
 
@@ -8,33 +10,41 @@ namespace Week3_LibraryManagementSystem.Repository.Implementations
 {
     public abstract class BaseRepository<T> : IRepository<T> where T : class, IEntity
     {
-        protected abstract List<T> DbSet { get; }
+        protected readonly LibraryContext _context;
+        protected readonly DbSet<T> DbSet;
 
-        public Task<T> CreateAsync(T entity)
+        public BaseRepository(LibraryContext context)
         {
-            entity.Id = Guid.NewGuid();
-            DbSet.Add(entity);
-            return Task.FromResult(entity);
+            _context = context;
+            DbSet = _context.Set<T>();
         }
 
-        public Task<bool> DeleteAsync(Guid id)
+        public async Task<T> CreateAsync(T entity)
         {
-            var entity = DbSet.FirstOrDefault(x => x.Id == id);
-            if (entity == null) 
-                return Task.FromResult(false);
+            await DbSet.AddAsync(entity);
+            await _context.SaveChangesAsync();
+            return entity;
+        }
+
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var entity = await DbSet.FirstOrDefaultAsync(x => x.Id == id);
+            if (entity == null)
+                return false;
 
             DbSet.Remove(entity);
-            return Task.FromResult(true);
+            await _context.SaveChangesAsync();
+            return true;
         }
 
-        public Task<IEnumerable<T>> GetAllAsync()
+        public async virtual Task<IEnumerable<T>> GetAllAsync()
         {
-            return Task.FromResult(DbSet.AsEnumerable());
+            return await DbSet.AsNoTracking().ToListAsync();
         }
 
-        public Task<T?> GetByIdAsync(Guid id)
+        public async virtual Task<T?> GetByIdAsync(int id)
         {
-            return Task.FromResult(DbSet.FirstOrDefault(x => x.Id == id));
+            return await DbSet.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public abstract Task<bool> UpdateAsync(T entity);

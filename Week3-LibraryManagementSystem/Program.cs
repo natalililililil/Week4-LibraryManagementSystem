@@ -1,7 +1,9 @@
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Week3_LibraryManagementSystem.Data;
 using Week3_LibraryManagementSystem.Repository.Implementations;
 using Week3_LibraryManagementSystem.Repository.Interfaces;
 using Week3_LibraryManagementSystem.Services.Implementations;
@@ -9,6 +11,10 @@ using Week3_LibraryManagementSystem.Services.Interfaces;
 using Week3_LibraryManagementSystem.Validation;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<LibraryContext>(options =>
+    options.UseSqlServer(connectionString));
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -27,8 +33,8 @@ builder.Services.AddValidatorsFromAssemblyContaining<AuthorValidator>();
 builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<IAuthorService, AuthorService>();
 
-builder.Services.AddSingleton<IAuthorRepository, AuthorRepository>();
-builder.Services.AddSingleton<IBookRepository, BookRepository>();
+builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
+builder.Services.AddScoped<IBookRepository, BookRepository>();
 
 var app = builder.Build();
 
@@ -65,5 +71,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<LibraryContext>();
+    dbContext.Database.Migrate();
+}
 
 app.Run();

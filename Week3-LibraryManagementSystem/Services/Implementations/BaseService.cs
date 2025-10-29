@@ -25,7 +25,7 @@ namespace Week3_LibraryManagementSystem.Services.Implementations
             return await _repository.CreateAsync(entity);
         }
 
-        public async Task<bool> UpdateAsync(Guid id, TDto dto)
+        public async Task<bool> UpdateAsync(int id, TDto dto)
         {
             await ValidateAsync(dto);
             var entity = await _repository.GetByIdAsync(id);
@@ -36,11 +36,11 @@ namespace Week3_LibraryManagementSystem.Services.Implementations
             return await _repository.UpdateAsync(entity);
         }
 
-        public async Task<bool> DeleteAsync(Guid id) => await _repository.DeleteAsync(id);
+        public async Task<bool> DeleteAsync(int id) => await _repository.DeleteAsync(id);
 
         public async Task<IEnumerable<TEntity>> GetAllAsync() => await _repository.GetAllAsync();
 
-        public async Task<TEntity?> GetByIdAsync(Guid id) => await _repository.GetByIdAsync(id);
+        public async Task<TEntity?> GetByIdAsync(int id) => await _repository.GetByIdAsync(id);
 
         private async Task ValidateAsync(TDto dto)
         {

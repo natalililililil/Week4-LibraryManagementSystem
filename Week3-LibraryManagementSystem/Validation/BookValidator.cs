@@ -17,7 +17,7 @@ namespace Week3_LibraryManagementSystem.Validation
                 .WithMessage($"Год публикации должен быть в диапазоне от 1500 до {DateTime.Now.Year}");
 
             RuleFor(b => b.AuthorId)
-                .NotEmpty().WithMessage("AuthorId не может быть пустым")
+                .GreaterThan(0).WithMessage("AuthorId не может быть пустым")
                 .Must(authorId => authorRepository.GetByIdAsync(authorId) != null)
                 .WithMessage("Автор с таким Id не найден");
         }

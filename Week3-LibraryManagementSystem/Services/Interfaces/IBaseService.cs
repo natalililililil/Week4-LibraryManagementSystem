@@ -7,9 +7,9 @@ namespace Week3_LibraryManagementSystem.Services.Interfaces
         where TDto : class
     {
         Task<IEnumerable<TEntity>> GetAllAsync();
-        Task<TEntity?> GetByIdAsync(Guid id);
+        Task<TEntity?> GetByIdAsync(int id);
         Task<TEntity> CreateAsync(TDto entity);
-        Task<bool> UpdateAsync(Guid id, TDto entity);
-        Task<bool> DeleteAsync(Guid id);
+        Task<bool> UpdateAsync(int id, TDto entity);
+        Task<bool> DeleteAsync(int id);
     }
 }
