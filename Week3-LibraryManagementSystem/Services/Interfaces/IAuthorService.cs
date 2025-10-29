@@ -5,7 +5,7 @@ namespace Week3_LibraryManagementSystem.Services.Interfaces
 {
     public interface IAuthorService : IBaseService<Author, AuthorDto>
     {
-        Task<IEnumerable<object>> GetAuthorsWithBookCountAsync();
+        Task<IEnumerable<AuthorWithBookCountDto>> GetAuthorsWithBookCountAsync();
         Task<IEnumerable<Author>> FindAuthorsByNameAsync(string namePart);
     }
 

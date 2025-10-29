@@ -28,7 +28,7 @@ namespace Week3_LibraryManagementSystem.Services.Implementations
             entity.DateOfBirth = dto.DateOfBirth;
         }
 
-        public async Task<IEnumerable<object>> GetAuthorsWithBookCountAsync()
+        public async Task<IEnumerable<AuthorWithBookCountDto>> GetAuthorsWithBookCountAsync()
         => await _authorRepository.GetAuthorsWithBookCountAsync();
 
         public async Task<IEnumerable<Author>> FindAuthorsByNameAsync(string namePart)

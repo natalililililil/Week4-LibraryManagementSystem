@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Week3_LibraryManagementSystem.Models.Entities;
 using Week3_LibraryManagementSystem.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Week3_LibraryManagementSystem.Models.DTOs;
 
 namespace Week3_LibraryManagementSystem.Repository.Implementations
 {
@@ -34,13 +35,12 @@ namespace Week3_LibraryManagementSystem.Repository.Implementations
             return await DbSet.Include(a => a.Books).AsNoTracking().ToListAsync();
         }
 
-        public async Task<IEnumerable<object>> GetAuthorsWithBookCountAsync() =>
-            await DbSet.Include(a => a.Books).Select(
-                a => new {
-                    a.Id,
-                    a.Name,
-                    BookCount = a.Books!.Count
-                }).ToListAsync();
+        public async Task<IEnumerable<AuthorWithBookCountDto>> GetAuthorsWithBookCountAsync() =>
+            await DbSet.Select(a => new AuthorWithBookCountDto
+            {
+                Name = a.Name,
+                BookCount = a.Books!.Count
+            }).ToListAsync();
 
         public async Task<IEnumerable<Author>> FindAuthorsByNameAsync(string namePart) =>
             await DbSet.Where(a => a.Name.Contains(namePart) || a.Name.StartsWith(namePart))

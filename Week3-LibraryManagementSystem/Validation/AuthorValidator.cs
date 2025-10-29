@@ -12,7 +12,7 @@ namespace Week3_LibraryManagementSystem.Validation
                 .MaximumLength(100).WithMessage("Имя автора не должно превышать 100 символов");
 
             RuleFor(a => a.DateOfBirth)
-                .LessThan(DateTime.Now).WithMessage("Дата рождения должна быть в прошлом");
+                .LessThan(DateTime.Today).WithMessage("Дата рождения должна быть в прошлом");
         }
     }
 
