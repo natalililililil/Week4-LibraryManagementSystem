@@ -24,5 +24,12 @@ namespace Week3_LibraryManagementSystem.Repository.Implementations
             await _context.SaveChangesAsync();
             return true;
         }
+
+        public async Task<IEnumerable<Book>> GetBooksAfterYearAsync(int year) =>
+            await DbSet
+                .Where(b => b.PublishedYear > year)
+                .Include(b => b.Author)
+                .AsNoTracking()
+                .ToListAsync();
     }
 }

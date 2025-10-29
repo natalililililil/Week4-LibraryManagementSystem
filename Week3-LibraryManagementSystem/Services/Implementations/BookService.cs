@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Week3_LibraryManagementSystem.Models.DTOs;
 using Week3_LibraryManagementSystem.Models.Entities;
+using Week3_LibraryManagementSystem.Repository.Implementations;
 using Week3_LibraryManagementSystem.Repository.Interfaces;
 using Week3_LibraryManagementSystem.Services.Interfaces;
 
@@ -8,8 +9,13 @@ namespace Week3_LibraryManagementSystem.Services.Implementations
 {
     public class BookService : BaseService<Book, BookDto>, IBookService
     {
+        private readonly IBookRepository _bookRepository;
+
         public BookService(IBookRepository repository, IValidator<BookDto> validator)
-            : base(repository, validator) { }
+            : base(repository, validator) 
+        {
+            _bookRepository = repository;
+        }
 
         protected override Book MapToEntity(BookDto dto) => new Book
         {
@@ -24,5 +30,6 @@ namespace Week3_LibraryManagementSystem.Services.Implementations
             entity.PublishedYear = dto.PublishedYear;
             entity.AuthorId = dto.AuthorId;
         }
+        public async Task<IEnumerable<Book>> GetBooksAfterYearAsync(int year) => await _bookRepository.GetBooksAfterYearAsync(year);
     }
 }

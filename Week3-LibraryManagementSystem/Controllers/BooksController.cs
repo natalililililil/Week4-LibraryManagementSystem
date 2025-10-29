@@ -60,5 +60,12 @@ namespace Week3_LibraryManagementSystem.Controllers
                 return NotFound();
             return NoContent();
         }
+
+        [HttpGet("after/{year}")]
+        public async Task<IActionResult> GetBooksAfter(int year)
+        {
+            var books = await _bookService.GetBooksAfterYearAsync(year);
+            return Ok(books);
+        }
     }
 }

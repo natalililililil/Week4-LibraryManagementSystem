@@ -60,5 +60,20 @@ namespace Week3_LibraryManagementSystem.Controllers
                 return NotFound();
             return NoContent();
         }
+
+        [HttpGet("with-book-count")]
+        public async Task<IActionResult> GetAuthorsWithBookCount()
+        {
+            var result = await _authorService.GetAuthorsWithBookCountAsync();
+            return Ok(result);
+        }
+
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchAuthors([FromQuery] string name)
+        {
+            var result = await _authorService.FindAuthorsByNameAsync(name);
+            return Ok(result);
+        }
+
     }
 }
