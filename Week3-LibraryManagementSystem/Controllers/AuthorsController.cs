@@ -64,7 +64,7 @@ namespace Week3_LibraryManagementSystem.Controllers
         [HttpGet("with-book-count")]
         public async Task<IActionResult> GetAuthorsWithBookCount()
         {
-            var result = await _authorService.GetAuthorsWithBookCountAsync();
+            var result = await _authorService.GetAuthorSummariesAsync();
             return Ok(result);
         }
 

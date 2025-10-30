@@ -35,9 +35,10 @@ namespace Week3_LibraryManagementSystem.Repository.Implementations
             return await DbSet.Include(a => a.Books).AsNoTracking().ToListAsync();
         }
 
-        public async Task<IEnumerable<AuthorWithBookCountDto>> GetAuthorsWithBookCountAsync() =>
+        public async Task<IEnumerable<AuthorWithBookCountDto>> GetAuthorSummariesAsync() =>
             await DbSet.Select(a => new AuthorWithBookCountDto
             {
+                Id = a.Id,
                 Name = a.Name,
                 BookCount = a.Books!.Count
             }).ToListAsync();

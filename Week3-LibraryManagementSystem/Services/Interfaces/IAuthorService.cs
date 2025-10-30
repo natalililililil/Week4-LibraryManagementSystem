@@ -11,7 +11,7 @@ namespace Week3_LibraryManagementSystem.Services.Interfaces
         Task<bool> UpdateAsync(int id, AuthorDto dto);
         Task<bool> DeleteAsync(int id);
 
-        Task<IEnumerable<AuthorWithBookCountDto>> GetAuthorsWithBookCountAsync();
+        Task<IEnumerable<AuthorWithBookCountDto>> GetAuthorSummariesAsync();
         Task<IEnumerable<Author>> FindAuthorsByNameAsync(string namePart);
     }
 }

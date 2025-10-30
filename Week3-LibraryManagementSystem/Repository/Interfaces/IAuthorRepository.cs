@@ -5,7 +5,7 @@ namespace Week3_LibraryManagementSystem.Repository.Interfaces
 {
     public interface IAuthorRepository : IRepository<Author, int>
     {
-        Task<IEnumerable<AuthorWithBookCountDto>> GetAuthorsWithBookCountAsync();
+        Task<IEnumerable<AuthorWithBookCountDto>> GetAuthorSummariesAsync();
         Task<IEnumerable<Author>> FindAuthorsByNameAsync(string namePart);
     }
 }

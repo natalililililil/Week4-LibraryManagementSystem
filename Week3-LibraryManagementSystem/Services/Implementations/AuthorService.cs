@@ -42,8 +42,8 @@ namespace Week3_LibraryManagementSystem.Services.Implementations
 
         public async Task<Author?> GetByIdAsync(int id) => await _repository.GetByIdAsync(id);
 
-        public async Task<IEnumerable<AuthorWithBookCountDto>> GetAuthorsWithBookCountAsync()
-            => await _repository.GetAuthorsWithBookCountAsync();
+        public async Task<IEnumerable<AuthorWithBookCountDto>> GetAuthorSummariesAsync()
+            => await _repository.GetAuthorSummariesAsync();
 
         public async Task<IEnumerable<Author>> FindAuthorsByNameAsync(string namePart)
             => await _repository.FindAuthorsByNameAsync(namePart);
